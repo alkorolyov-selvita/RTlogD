@@ -4,10 +4,10 @@
 
 Dependencies：
 
-- rdkit 2020.09.1.0
-- python >=3.6
-- pytorch 1.9.0
-- dgl  0.8.1
+- rdkit
+- python >=3.10
+- pytorch 1.13.0
+- dgl 0.8.1
 - numpy
 - pandas
 - tqdm
@@ -17,6 +17,7 @@ Dependencies：
 conda install pytorch==1.13.1 cpuonly -c pytorch
 conda install dglteam::dgl==0.8.1
 pip install dgllife==0.2.9
+mamba install 'mkl<=2024.0'
 ```
 
 # Using
