@@ -67,12 +67,24 @@ def main(smiles_list,args, exp_config, test_set):
 
     print('It took {:.4f}s to complete the task'.format(time.time() - t0))
 
-   
+import pickle
+import io
+
+class CPU_Unpickler(pickle.Unpickler):
+    def find_class(self, module, name):
+        if module == 'torch.storage' and name == '_load_from_bytes':
+            return lambda b: torch.load(io.BytesIO(b), map_location='cpu')
+        else:
+            return super().find_class(module, name)
+
 if __name__ == '__main__':
     import torch
     from utils import setup
     with open('final_model/RTlogD/args.pickle', 'rb') as file:
-        args =pickle.load(file)
+        # args = pickle.load(file)
+        args = CPU_Unpickler(file).load()
+        # torch.load('final_model/RTlogD/args.pickle', map_location=torch.device('cpu'))
+        # args = torch.load(file, map_location=torch.device('cpu'))
     with open('final_model/RTlogD/configure.json', 'r') as f:
         exp_config = json.load(f)
     args['device'] = torch.device('cpu')

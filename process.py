@@ -13,11 +13,12 @@ import pandas as pd
 from rdkit.Chem.MolStandardize import rdMolStandardize
 RDLogger.DisableLog('rdApp.*')
 
+
 def canonicalize_smiles(smiles):
-    if len(smiles)==0:
+    if len(smiles) == 0:
         return ''
     mol = Chem.MolFromSmiles(smiles)
-    lfc = MolStandardize.fragment.LargestFragmentChooser()
+    lfc = rdMolStandardize.LargestFragmentChooser()
     
     if mol is not None:
         mol2 = lfc.choose(mol)
@@ -29,20 +30,17 @@ def canonicalize_smiles(smiles):
 
 
 def run(line):
-    
-    smi=line.smiles.values.tolist()
-    p=Pool(30)
-    smi=p.map(process_tautomer,smi) 
-    if smi==''  is None:
+    smi = line.smiles.values.tolist()
+    p = Pool(30)
+    smi = p.map(process_tautomer, smi)
+    if smi is None:
         return None
     else:
-        data={'smiles':smi
-  }
-        data=pd.DataFrame(data)
+        data = {'smiles': smi}
+        data = pd.DataFrame(data)
         return data
 
 def process_tautomer(smi):
-
     smiles=canonicalize_smiles(smi)
     mol = Chem.MolFromSmiles(smiles)
     enumerator = rdMolStandardize.TautomerEnumerator()
