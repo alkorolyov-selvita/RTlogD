@@ -13,10 +13,11 @@ Dependencies：
 - tqdm
 - dgllife 0.2.9
 
+```
 conda install pytorch==1.13.1 cpuonly -c pytorch
 conda install dglteam::dgl==0.8.1
 pip install dgllife==0.2.9
-
+```
 
 # Using
 
